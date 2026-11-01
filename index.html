@@ -3,189 +3,474 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BattleNest BD</title>
+<meta name="theme-color" content="#0b0d12">
+<title>BattleNest BD | Gaming Arena</title>
+
 <style>
-body{margin:0;background:#101522;color:white;font-family:Arial}
-header{text-align:center;padding:20px;background:#191f30;color:#ffb000}
-main{max-width:500px;margin:auto;padding:15px}
-.card{background:#1b2233;padding:18px;margin:15px 0;border-radius:12px}
-h2,h3{color:#ffb000}
-input{box-sizing:border-box;width:100%;padding:12px;margin:8px 0;background:#101522;color:white;border:1px solid #555;border-radius:6px}
-button{padding:12px;margin:5px 2px;background:#ffb000;border:0;border-radius:6px;font-weight:bold}
-#status{overflow-wrap:anywhere}
+:root{
+  --bg:#0b0d12;
+  --panel:#151922;
+  --panel2:#1c222d;
+  --red:#ff453a;
+  --gold:#ffbd45;
+  --text:#f5f6fa;
+  --muted:#969eac;
+  --green:#43e59b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;
+  top:0;
+  z-index:5;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#10131bf2;
+  border-bottom:1px solid #292e39;
+}
+.logo{font-size:20px;font-weight:900}
+.logo span{color:var(--red)}
+.menu{
+  background:var(--panel2);
+  border:1px solid #333b49;
+  color:white;
+  padding:9px 12px;
+  border-radius:9px;
+}
+main{max-width:700px;margin:auto;padding:15px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:26px 20px;
+  border-radius:18px;
+  background:
+    radial-gradient(ellipse at 100% 0%,#a42b2670,transparent 55%),
+    linear-gradient(135deg,#29202a,#141721 70%);
+  border:1px solid #503039;
+}
+.badge{
+  display:inline-block;
+  color:var(--gold);
+  background:#ffbd4518;
+  padding:7px 10px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+.hero h1{
+  font-size:34px;
+  line-height:1.15;
+  margin:17px 0 10px;
+}
+.hero h1 span{color:var(--red)}
+p{line-height:1.6}
+.muted{color:var(--muted)}
+.btn{
+  border:0;
+  padding:12px 16px;
+  border-radius:9px;
+  background:var(--red);
+  color:white;
+  font-weight:bold;
+}
+.btn.gold{background:var(--gold);color:#151515}
+.btn.secondary{
+  background:#292f3b;
+  border:1px solid #3b4352;
+  color:white;
+}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:27px 0 13px;
+}
+.section-head h2{font-size:19px;margin:0}
+.section-head small{color:var(--muted)}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:17px;
+}
+.stat{
+  background:#10141d;
+  padding:12px 8px;
+  border-radius:10px;
+  border:1px solid #2b303b;
+}
+.stat b{display:block;font-size:18px;color:var(--gold)}
+.stat small{color:var(--muted);font-size:11px}
+.card{
+  background:var(--panel);
+  border:1px solid #292f3b;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+.match-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+.game-icon{
+  width:47px;height:47px;
+  display:grid;place-items:center;
+  font-size:24px;
+  background:#30202a;
+  border-radius:12px;
+}
+.match-title{font-weight:bold;margin-bottom:5px}
+.pill{
+  font-size:11px;
+  color:var(--green);
+  background:#43e59b16;
+  padding:6px 8px;
+  height:max-content;
+  border-radius:6px;
+}
+.match-info{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:16px 0;
+  border-top:1px solid #303542;
+  padding-top:13px;
+}
+.match-info small{display:block;color:var(--muted);font-size:11px}
+.match-info b{display:block;margin-top:6px;font-size:14px}
+.full{width:100%}
+input{
+  width:100%;
+  padding:13px;
+  margin:7px 0 12px;
+  background:#0d1017;
+  color:white;
+  border:1px solid #353d4c;
+  border-radius:9px;
+  outline:none;
+}
+input:focus{border-color:var(--red)}
+label{font-size:13px;color:#c4cad4}
+.hidden{display:none!important}
+.profile-head{
+  display:flex;align-items:center;gap:13px;
+}
+.avatar{
+  width:55px;height:55px;
+  display:grid;place-items:center;
+  font-size:25px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#ff453a,#7c1d36);
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th,td{
+  padding:13px 10px;
+  text-align:center;
+  border-bottom:1px solid #2b303b;
+  font-size:12px;
+}
+th{color:var(--muted);font-weight:normal}
+td:first-child{color:var(--gold)}
+footer{
+  text-align:center;
+  color:var(--muted);
+  padding:25px 12px 100px;
+  font-size:12px;
+}
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:6;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 3px calc(12px + env(safe-area-inset-bottom));
+  background:#11151df5;
+  border-top:1px solid #303642;
+}
+.bottom-nav button{
+  color:#aeb5c2;
+  background:none;
+  border:0;
+  font-size:11px;
+}
+.bottom-nav button span{
+  display:block;font-size:20px;margin-bottom:5px;
+}
+.bottom-nav button.active{color:var(--gold)}
+.notice{font-size:12px;color:var(--muted)}
+@media(min-width:600px){
+  main{padding:22px}
+  .hero h1{font-size:43px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>⚔ BattleNest BD</h1>
-<p>Free Fire Tournament</p>
+  <div class="logo">⚔ BATTLE<span>NEST</span> BD</div>
+  <button class="menu" onclick="openSection('profile')">👤 আমার প্রোফাইল</button>
 </header>
+
 <main>
-<div class="card">
-<h2>তোমার যুদ্ধ শুরু হোক!</h2>
-<p>টুর্নামেন্টে অংশ নাও এবং লিডারবোর্ডে এগিয়ে যাও!</p>
-</div>
 
-<div class="card">
-<h3>🔐 লগইন / রেজিস্টার</h3>
-<input id="email" type="email" placeholder="ইমেইল লিখো">
-<input id="password" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)">
-<button id="register">রেজিস্টার</button>
-<button id="login">লগইন</button>
-<button id="logout" hidden>লগআউট</button>
-<p id="status">অ্যাকাউন্ট তৈরি করো অথবা লগইন করো।</p>
-</div>
+<section id="home">
+  <div class="hero">
+    <span class="badge">🔥 YOUR BATTLE STARTS HERE</span>
+    <h1>ENTER THE<br><span>BATTLE ARENA</span></h1>
+    <p class="muted">দক্ষতা দেখাও, ম্যাচ জেতো এবং লিডারবোর্ডে নিজের জায়গা তৈরি করো!</p>
+    <button class="btn" onclick="openSection('matches')">🎮 ম্যাচ দেখো →</button>
 
-<div class="card">
-<h3>🏆 পয়েন্ট সিস্টেম</h3>
-<p>১ম স্থান: ১০ পয়েন্ট</p>
-<p>২য় স্থান: ৮ পয়েন্ট</p>
-<p>৩য় স্থান: ৬ পয়েন্ট</p>
-<p>৪র্থ স্থান: ৪ পয়েন্ট</p>
-<p>৫ম স্থান: ৩ পয়েন্ট</p>
-<p>প্রতি কিল: ১ পয়েন্ট</p>
-</div>
+    <div class="stats">
+      <div class="stat"><b>SOLO</b><small>একক ম্যাচ</small></div>
+      <div class="stat"><b>DUO</b><small>দুইজনের দল</small></div>
+      <div class="stat"><b>SQUAD</b><small>চারজনের দল</small></div>
+    </div>
+  </div>
 
-<div class="card">
-<h3>🎮 ম্যাচসমূহ</h3>
-<p>ম্যাচের সময় ও এন্ট্রি ফি পরে যোগ করা হবে।</p>
-</div>
+  <div class="section-head">
+    <h2>🔥 Featured Matches</h2>
+    <small>টুর্নামেন্ট</small>
+  </div>
+
+  <div class="card">
+    <div class="match-top">
+      <div style="display:flex;gap:12px">
+        <div class="game-icon">🎯</div>
+        <div>
+          <div class="match-title">Free Fire Solo</div>
+          <small class="muted">একক প্রতিযোগিতা</small>
+        </div>
+      </div>
+      <span class="pill">শিগগিরই</span>
+    </div>
+    <div class="match-info">
+      <div><small>এন্ট্রি ফি</small><b>৳15–৳50</b></div>
+      <div><small>পুরস্কার</small><b>ঘোষণা হবে</b></div>
+      <div><small>সময়</small><b>পরে জানানো হবে</b></div>
+    </div>
+    <button class="btn secondary full"
+      onclick="alert('ম্যাচ এখনো চালু হয়নি।')">
+      MATCH DETAILS
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="match-top">
+      <div style="display:flex;gap:12px">
+        <div class="game-icon">🛡️</div>
+        <div>
+          <div class="match-title">Free Fire Squad</div>
+          <small class="muted">দলগত প্রতিযোগিতা</small>
+        </div>
+      </div>
+      <span class="pill">শিগগিরই</span>
+    </div>
+    <div class="match-info">
+      <div><small>এন্ট্রি ফি</small><b>৳15–৳50</b></div>
+      <div><small>পুরস্কার</small><b>ঘোষণা হবে</b></div>
+      <div><small>সময়</small><b>পরে জানানো হবে</b></div>
+    </div>
+    <button class="btn secondary full"
+      onclick="alert('ম্যাচ এখনো চালু হয়নি।')">
+      MATCH DETAILS
+    </button>
+  </div>
+</section>
+
+<section id="auth" class="hidden">
+  <div class="section-head"><h2>🔐 অ্যাকাউন্ট</h2></div>
+  <div class="card">
+    <p class="muted">BattleNest BD-তে প্রবেশ করো অথবা নতুন অ্যাকাউন্ট তৈরি করো।</p>
+    <label>ইমেইল</label>
+    <input id="email" type="email" placeholder="তোমার ইমেইল">
+    <label>পাসওয়ার্ড</label>
+    <input id="password" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
+
+    <button class="btn full" id="login">লগইন</button>
+    <button class="btn gold full" id="register" style="margin-top:9px">নতুন অ্যাকাউন্ট তৈরি</button>
+    <p id="authMessage" class="notice" role="status"></p>
+  </div>
+</section>
+
+<section id="profile" class="hidden">
+  <div class="section-head"><h2>👤 আমার প্রোফাইল</h2></div>
+  <div class="card">
+    <div class="profile-head">
+      <div class="avatar">🎮</div>
+      <div>
+        <h3 id="playerName" style="margin:0 0 6px">Player</h3>
+        <small id="profileEmail" class="muted">লগইন করা হয়নি</small>
+      </div>
+    </div>
+
+    <div id="privateInfo" class="hidden">
+      <div class="section-head"><h2>💰 আমার ব্যালেন্স</h2></div>
+      <div class="hero" style="padding:18px">
+        <small class="muted">বর্তমান ব্যালেন্স</small>
+        <h2 id="myBalance">৳0.00</h2>
+        <p class="notice">এটি আপাতত নমুনা। আসল ব্যালেন্স যুক্ত হয়নি।</p>
+      </div>
+      <button class="btn secondary full" id="logout">লগআউট</button>
+    </div>
+
+    <div id="guestInfo">
+      <p class="muted">নিজের প্রোফাইল দেখতে আগে লগইন করো।</p>
+      <button class="btn full" onclick="openSection('auth')">লগইন / রেজিস্টার</button>
+    </div>
+  </div>
+</section>
+
+<section id="leaderboard" class="hidden">
+  <div class="section-head">
+    <h2>🏆 লিডারবোর্ড</h2>
+    <small>সেরা খেলোয়াড়</small>
+  </div>
+  <div class="card">
+    <p class="notice">নিচের তথ্য শুধু ডিজাইনের নমুনা; এগুলো প্রকৃত খেলোয়াড় বা পুরস্কারের তথ্য নয়।</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>র‍্যাঙ্ক</th>
+            <th>নাম</th>
+            <th>জেতা টাকা</th>
+            <th>পয়েন্ট</th>
+            <th>কিল</th>
+            <th>অ্যাসিস্ট</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>🥇 ১</td><td>Player 1</td><td>৳500</td><td>100</td><td>20</td><td>8</td></tr>
+          <tr><td>🥈 ২</td><td>Player 2</td><td>৳300</td><td>85</td><td>15</td><td>10</td></tr>
+          <tr><td>🥉 ৩</td><td>Player 3</td><td>৳200</td><td>70</td><td>12</td><td>6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 </main>
+
+<footer>
+  <b>⚔ BattleNest BD</b>
+  <p>Play Fair. Fight Hard. Rise Together.</p>
+  <p>© 2026 BattleNest BD</p>
+</footer>
+
+<nav class="bottom-nav">
+  <button class="active" data-section="home" onclick="openSection('home')"><span>⌂</span>হোম</button>
+  <button data-section="matches" onclick="openSection('matches')"><span>🎮</span>ম্যাচ</button>
+  <button data-section="leaderboard" onclick="openSection('leaderboard')"><span>🏆</span>র‍্যাঙ্ক</button>
+  <button data-section="profile" onclick="openSection('profile')"><span>👤</span>প্রোফাইল</button>
+</nav>
+
+<script>
+function openSection(name){
+  if(name === 'matches') name = 'home';
+
+  ['home','auth','profile','leaderboard'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden',id!==name);
+  });
+
+  document.querySelectorAll('.bottom-nav button').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.section===name);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 
 <script type="module">
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-getAuth, createUserWithEmailAndPassword,
-signInWithEmailAndPassword, signOut,
-onAuthStateChanged
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyAdOl8lQ0UAt7yWggxIQmzp6SZ7qg1Azvo",
-authDomain: "battlenest-bd.firebaseapp.com",
-projectId: "battlenest-bd",
-storageBucket: "battlenest-bd.firebasestorage.app",
-messagingSenderId: "451996562900",
-appId: "1:451996562900:web:0d107375cff81b0a7e5241",
-measurementId: "G-DMHQDESMRH"
+  apiKey: "AIzaSyAdOl8lQ0UAt7yWggxIQmzp6SZ7qg1Azvo",
+  authDomain: "battlenest-bd.firebaseapp.com",
+  projectId: "battlenest-bd",
+  storageBucket: "battlenest-bd.firebasestorage.app",
+  messagingSenderId: "451996562900",
+  appId: "1:451996562900:web:0d107375cff81b0a7e5241",
+  measurementId: "G-DMHQDESMRH"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const status = document.getElementById("status");
-const logout = document.getElementById("logout");
+const email = document.getElementById('email');
+const password = document.getElementById('password');
+const message = document.getElementById('authMessage');
 
-document.getElementById("register").onclick = async () => {
-try {
-await createUserWithEmailAndPassword(
-auth, email.value.trim(), password.value
-);
-status.textContent = "রেজিস্টার সফল হয়েছে!";
-} catch (e) {
-status.textContent = "সমস্যা: " + e.message;
-}
-};
-
-document.getElementById("login").onclick = async () => {
-try {
-await signInWithEmailAndPassword(
-auth, email.value.trim(), password.value
-);
-status.textContent = "লগইন সফল হয়েছে!";
-} catch (e) {
-status.textContent = "সমস্যা: " + e.message;
-}
-};
-
-logout.onclick = async () => {
-await signOut(auth);
-status.textContent = "লগআউট হয়েছে।";
-};
-
-onAuthStateChanged(auth, user => {
-logout.hidden = !user;
-if (user) {
-status.textContent = "লগইন করা আছে: " + user.email;
-}
-});
-</script>
-  <!-- আমার প্রোফাইল -->
-<section class="card" id="myProfile">
-  <h3>👤 আমার প্রোফাইল</h3>
-  <p>📧 ইমেইল: <span id="profileEmail">লগইন করো</span></p>
-  <p>💰 আমার ব্যালেন্স: <span id="myBalance">৳0</span></p>
-  <button class="btn" onclick="showMyStats()">আমার পরিসংখ্যান</button>
-  <div id="myStats" hidden>
-    <p>⭐ পয়েন্ট: <span id="myPoints">0</span></p>
-    <p>🎯 কিল: <span id="myKills">0</span></p>
-    <p>🤝 অ্যাসিস্ট: <span id="myAssists">0</span></p>
-  </div>
-</section>
-
-<!-- লিডারবোর্ড -->
-<section class="card" id="leaderboard">
-  <h3>🏆 লিডারবোর্ড</h3>
-  <p>নিচের তালিকাটি শুধু ডিজাইনের নমুনা। আসল ফলাফল পরে যুক্ত হবে।</p>
-  <div style="overflow-x:auto">
-    <table style="width:100%;text-align:center;border-collapse:collapse">
-      <thead>
-        <tr>
-          <th>র‍্যাঙ্ক</th>
-          <th>নাম</th>
-          <th>জেতা টাকা</th>
-          <th>পয়েন্ট</th>
-          <th>কিল</th>
-          <th>অ্যাসিস্ট</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>🥇 ১</td>
-          <td>Player 1</td>
-          <td>৳500</td>
-          <td>100</td>
-          <td>20</td>
-          <td>8</td>
-        </tr>
-        <tr>
-          <td>🥈 ২</td>
-          <td>Player 2</td>
-          <td>৳300</td>
-          <td>85</td>
-          <td>15</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>🥉 ৩</td>
-          <td>Player 3</td>
-          <td>৳200</td>
-          <td>70</td>
-          <td>12</td>
-          <td>6</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<script>
-function showMyStats() {
-  const stats = document.getElementById('myStats');
-  stats.hidden = !stats.hidden;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const emailBox = document.getElementById('profileEmail');
-
-  if (emailBox && window.currentPlayerEmail) {
-    emailBox.textContent = window.currentPlayerEmail;
+document.getElementById('register').onclick = async () => {
+  message.textContent = 'অ্যাকাউন্ট তৈরি হচ্ছে...';
+  try {
+    await createUserWithEmailAndPassword(
+      auth,email.value.trim(),password.value
+    );
+    message.textContent = 'রেজিস্টার সফল হয়েছে!';
+    openSection('profile');
+  } catch(error) {
+    message.textContent = 'সমস্যা: ' + error.message;
   }
+};
+
+document.getElementById('login').onclick = async () => {
+  message.textContent = 'লগইন হচ্ছে...';
+  try {
+    await signInWithEmailAndPassword(
+      auth,email.value.trim(),password.value
+    );
+    message.textContent = 'লগইন সফল হয়েছে!';
+    openSection('profile');
+  } catch(error) {
+    message.textContent = 'সমস্যা: ' + error.message;
+  }
+};
+
+document.getElementById('logout').onclick = async () => {
+  try {
+    await signOut(auth);
+    openSection('home');
+  } catch(error) {
+    alert('লগআউট করা যায়নি। আবার চেষ্টা করো।');
+  }
+};
+
+onAuthStateChanged(auth,user=>{
+  const privateInfo = document.getElementById('privateInfo');
+  const guestInfo = document.getElementById('guestInfo');
+
+  privateInfo.classList.toggle('hidden',!user);
+  guestInfo.classList.toggle('hidden',!!user);
+
+  document.getElementById('profileEmail').textContent =
+    user ? user.email : 'লগইন করা হয়নি';
+
+  document.getElementById('playerName').textContent =
+    user ? (user.displayName || 'Player') : 'Guest';
 });
 </script>
+
 </body>
 </html>
