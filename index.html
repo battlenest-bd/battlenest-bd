@@ -1,137 +1,118 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BattleNest BD</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #101522;
-      color: white;
-    }
-    header {
-      background: #191f30;
-      padding: 18px;
-      text-align: center;
-      border-bottom: 2px solid #ffb000;
-    }
-    header h1 { color: #ffb000; margin: 0; }
-    header p { margin-bottom: 0; color: #ccc; }
-    .container { padding: 18px; max-width: 600px; margin: auto; }
-    .hero {
-      background: linear-gradient(135deg, #252e49, #121827);
-      border-radius: 14px;
-      padding: 24px 16px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .hero h2 { color: #ffb000; }
-    .btn {
-      display: inline-block;
-      background: #ffb000;
-      color: #151515;
-      padding: 12px 18px;
-      border: 0;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 5px;
-    }
-    .card {
-      background: #1b2233;
-      border: 1px solid #303a52;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-    .card h3 { margin-top: 0; color: #ffb000; }
-    .tag { color: #66e6a2; font-weight: bold; }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin: 7px 0 12px;
-      border: 1px solid #47516a;
-      border-radius: 7px;
-      background: #101522;
-      color: white;
-    }
-    #loginBox { display: none; }
-    footer { text-align: center; padding: 22px; color: #aaa; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BattleNest BD</title>
+<style>
+body{margin:0;background:#101522;color:white;font-family:Arial}
+header{text-align:center;padding:20px;background:#191f30;color:#ffb000}
+main{max-width:500px;margin:auto;padding:15px}
+.card{background:#1b2233;padding:18px;margin:15px 0;border-radius:12px}
+h2,h3{color:#ffb000}
+input{box-sizing:border-box;width:100%;padding:12px;margin:8px 0;background:#101522;color:white;border:1px solid #555;border-radius:6px}
+button{padding:12px;margin:5px 2px;background:#ffb000;border:0;border-radius:6px;font-weight:bold}
+#status{overflow-wrap:anywhere}
+</style>
 </head>
 <body>
-  <header>
-    <h1>⚔ BattleNest BD</h1>
-    <p>Free Fire Tournament Platform</p>
-  </header>
+<header>
+<h1>⚔ BattleNest BD</h1>
+<p>Free Fire Tournament</p>
+</header>
+<main>
+<div class="card">
+<h2>তোমার যুদ্ধ শুরু হোক!</h2>
+<p>টুর্নামেন্টে অংশ নাও এবং লিডারবোর্ডে এগিয়ে যাও!</p>
+</div>
 
-  <main class="container">
-    <section class="hero">
-      <h2>তোমার যুদ্ধ শুরু হোক!</h2>
-      <p>টুর্নামেন্টে অংশ নাও, পয়েন্ট অর্জন করো এবং লিডারবোর্ডে এগিয়ে যাও।</p>
-      <button class="btn" onclick="showMatches()">ম্যাচ দেখো</button>
-      <button class="btn" onclick="showLogin()">লগইন / রেজিস্টার</button>
-    </section>
+<div class="card">
+<h3>🔐 লগইন / রেজিস্টার</h3>
+<input id="email" type="email" placeholder="ইমেইল লিখো">
+<input id="password" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)">
+<button id="register">রেজিস্টার</button>
+<button id="login">লগইন</button>
+<button id="logout" hidden>লগআউট</button>
+<p id="status">অ্যাকাউন্ট তৈরি করো অথবা লগইন করো।</p>
+</div>
 
-    <section class="card">
-      <h3>🏆 আমাদের ফিচার</h3>
-      <p>🎮 Solo, Duo ও Squad Tournament</p>
-      <p>📊 পয়েন্ট টেবিল ও লিডারবোর্ড</p>
-      <p>💰 ব্যালেন্স ও পুরস্কারের হিসাব</p>
-      <p>📅 আয়োজকের নির্ধারিত ম্যাচের সময়</p>
-    </section>
+<div class="card">
+<h3>🏆 পয়েন্ট সিস্টেম</h3>
+<p>১ম স্থান: ১০ পয়েন্ট</p>
+<p>২য় স্থান: ৮ পয়েন্ট</p>
+<p>৩য় স্থান: ৬ পয়েন্ট</p>
+<p>৪র্থ স্থান: ৪ পয়েন্ট</p>
+<p>৫ম স্থান: ৩ পয়েন্ট</p>
+<p>প্রতি কিল: ১ পয়েন্ট</p>
+</div>
 
-    <section id="matches" class="card">
-      <h3>🎯 ম্যাচসমূহ</h3>
-      <p>এখনো কোনো ম্যাচ যোগ করা হয়নি।</p>
-      <p>ম্যাচের সময় ও ফি আয়োজক ঘোষণা করবেন।</p>
-    </section>
+<div class="card">
+<h3>🎮 ম্যাচসমূহ</h3>
+<p>ম্যাচের সময় ও এন্ট্রি ফি পরে যোগ করা হবে।</p>
+</div>
+</main>
 
-    <section id="loginBox" class="card">
-      <h3>🔐 অ্যাকাউন্ট</h3>
-      <label>ইমেইল</label>
-      <input type="email" id="email" placeholder="তোমার ইমেইল">
-      <label>পাসওয়ার্ড</label>
-      <input type="password" id="password" placeholder="পাসওয়ার্ড">
-      <button class="btn" onclick="demoMessage()">চালিয়ে যাও</button>
-      <p id="loginMessage"></p>
-      <small>এটি এখন শুধু ডিজাইন। আসল লগইন পরের ধাপে Firebase দিয়ে যুক্ত হবে।</small>
-    </section>
+<script type="module">
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-    <section class="card">
-      <h3>📊 পয়েন্ট সিস্টেম</h3>
-      <p>১ম স্থান: ১০ পয়েন্ট</p>
-      <p>২য় স্থান: ৮ পয়েন্ট</p>
-      <p>৩য় স্থান: ৬ পয়েন্ট</p>
-      <p>৪র্থ স্থান: ৪ পয়েন্ট</p>
-      <p>৫ম স্থান: ৩ পয়েন্ট</p>
-      <p>প্রতি কিল: ১ পয়েন্ট</p>
-    </section>
+import {
+getAuth, createUserWithEmailAndPassword,
+signInWithEmailAndPassword, signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    <section class="card">
-      <h3>📞 যোগাযোগ</h3>
-      <p>WhatsApp যোগাযোগের নম্বর আয়োজক পরে যোগ করবেন।</p>
-    </section>
-  </main>
+const firebaseConfig = {
+apiKey: "AIzaSyAdOl8lQ0UAt7yWggxIQmzp6SZ7qg1Azvo",
+authDomain: "battlenest-bd.firebaseapp.com",
+projectId: "battlenest-bd",
+storageBucket: "battlenest-bd.firebasestorage.app",
+messagingSenderId: "451996562900",
+appId: "1:451996562900:web:0d107375cff81b0a7e5241",
+measurementId: "G-DMHQDESMRH"
+};
 
-  <footer>© 2026 BattleNest BD</footer>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  <script>
-    function showMatches() {
-      document.getElementById('matches').scrollIntoView({behavior:'smooth'});
-    }
-    function showLogin() {
-      const box = document.getElementById('loginBox');
-      box.style.display = 'block';
-      box.scrollIntoView({behavior:'smooth'});
-    }
-    function demoMessage() {
-      document.getElementById('loginMessage').textContent =
-        'এটি ডেমো। আসল লগইন এখনো যুক্ত করা হয়নি।';
-    }
-  </script>
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const status = document.getElementById("status");
+const logout = document.getElementById("logout");
+
+document.getElementById("register").onclick = async () => {
+try {
+await createUserWithEmailAndPassword(
+auth, email.value.trim(), password.value
+);
+status.textContent = "রেজিস্টার সফল হয়েছে!";
+} catch (e) {
+status.textContent = "সমস্যা: " + e.message;
+}
+};
+
+document.getElementById("login").onclick = async () => {
+try {
+await signInWithEmailAndPassword(
+auth, email.value.trim(), password.value
+);
+status.textContent = "লগইন সফল হয়েছে!";
+} catch (e) {
+status.textContent = "সমস্যা: " + e.message;
+}
+};
+
+logout.onclick = async () => {
+await signOut(auth);
+status.textContent = "লগআউট হয়েছে।";
+};
+
+onAuthStateChanged(auth, user => {
+logout.hidden = !user;
+if (user) {
+status.textContent = "লগইন করা আছে: " + user.email;
+}
+});
+</script>
 </body>
 </html>
