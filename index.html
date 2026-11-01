@@ -114,5 +114,78 @@ status.textContent = "লগইন করা আছে: " + user.email;
 }
 });
 </script>
+  <!-- আমার প্রোফাইল -->
+<section class="card" id="myProfile">
+  <h3>👤 আমার প্রোফাইল</h3>
+  <p>📧 ইমেইল: <span id="profileEmail">লগইন করো</span></p>
+  <p>💰 আমার ব্যালেন্স: <span id="myBalance">৳0</span></p>
+  <button class="btn" onclick="showMyStats()">আমার পরিসংখ্যান</button>
+  <div id="myStats" hidden>
+    <p>⭐ পয়েন্ট: <span id="myPoints">0</span></p>
+    <p>🎯 কিল: <span id="myKills">0</span></p>
+    <p>🤝 অ্যাসিস্ট: <span id="myAssists">0</span></p>
+  </div>
+</section>
+
+<!-- লিডারবোর্ড -->
+<section class="card" id="leaderboard">
+  <h3>🏆 লিডারবোর্ড</h3>
+  <p>নিচের তালিকাটি শুধু ডিজাইনের নমুনা। আসল ফলাফল পরে যুক্ত হবে।</p>
+  <div style="overflow-x:auto">
+    <table style="width:100%;text-align:center;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th>র‍্যাঙ্ক</th>
+          <th>নাম</th>
+          <th>জেতা টাকা</th>
+          <th>পয়েন্ট</th>
+          <th>কিল</th>
+          <th>অ্যাসিস্ট</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🥇 ১</td>
+          <td>Player 1</td>
+          <td>৳500</td>
+          <td>100</td>
+          <td>20</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>🥈 ২</td>
+          <td>Player 2</td>
+          <td>৳300</td>
+          <td>85</td>
+          <td>15</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>🥉 ৩</td>
+          <td>Player 3</td>
+          <td>৳200</td>
+          <td>70</td>
+          <td>12</td>
+          <td>6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+function showMyStats() {
+  const stats = document.getElementById('myStats');
+  stats.hidden = !stats.hidden;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const emailBox = document.getElementById('profileEmail');
+
+  if (emailBox && window.currentPlayerEmail) {
+    emailBox.textContent = window.currentPlayerEmail;
+  }
+});
+</script>
 </body>
 </html>
