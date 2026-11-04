@@ -210,6 +210,8 @@ footer{
 }
 .bottom-nav button.active{color:var(--gold)}
 .notice{font-size:12px;color:var(--muted)}
+.admin-warning{border:1px solid #8b6b2c;background:#3b2d151c;color:#ffd980;padding:12px;border-radius:10px;font-size:12px;line-height:1.6}
+.admin-label{display:block;margin-top:8px}
 @media(min-width:600px){
   main{padding:22px}
   .hero h1{font-size:43px}
@@ -333,6 +335,24 @@ footer{
   </div>
 </section>
 
+<section id="admin" class="hidden">
+  <div class="section-head"><h2>🛡️ Owner Admin Panel</h2><small>Preview</small></div>
+  <div class="card">
+    <p class="admin-warning">⚠️ এটি শুধু Admin Panel-এর প্রাথমিক ডিজাইন। এখনো ম্যাচ তৈরি, পেমেন্ট, ব্যালেন্স বা অন্য Admin যোগ করার কাজ চালু হয়নি। শুধু ওয়েবপেজে UID পরীক্ষা নিরাপত্তার জন্য যথেষ্ট নয়। নিরাপদ Firestore Rules/সার্ভার যাচাই সেটআপ না হওয়া পর্যন্ত বাস্তব টাকা বা গোপন Room ID ব্যবহার কোরো না।</p>
+    <h3>🎮 নতুন ম্যাচ (ডেমো)</h3>
+    <label class="admin-label" for="matchMode">ম্যাচের ধরন</label>
+    <select id="matchMode" style="width:100%;padding:12px;background:#0d1017;color:white;border:1px solid #353d4c;border-radius:9px;margin:7px 0 12px">
+      <option>Solo</option><option>Duo</option><option>Squad</option>
+    </select>
+    <label>ম্যাচের নাম</label><input id="matchName" placeholder="যেমন: BattleNest Solo #1">
+    <label>এন্ট্রি ফি (৳)</label><input id="matchFee" type="number" min="0" max="10000" placeholder="যেমন: 20">
+    <label>তারিখ ও সময়</label><input id="matchTime" type="datetime-local">
+    <label>প্রাইজ পুল (৳) — ডেমো</label><input id="matchPrize" type="number" min="0" placeholder="যেমন: 500">
+    <button class="btn gold full" id="demoMatchButton">ডেমো প্রিভিউ দেখো</button>
+    <p id="demoMatchMessage" class="notice" role="status"></p>
+  </div>
+</section>
+
 <section id="leaderboard" class="hidden">
   <div class="section-head">
     <h2>🏆 লিডারবোর্ড</h2>
@@ -375,13 +395,14 @@ footer{
   <button data-section="matches" onclick="openSection('matches')"><span>🎮</span>ম্যাচ</button>
   <button data-section="leaderboard" onclick="openSection('leaderboard')"><span>🏆</span>র‍্যাঙ্ক</button>
   <button data-section="profile" onclick="openSection('profile')"><span>👤</span>প্রোফাইল</button>
+  <button id="adminNav" class="hidden" data-section="admin" onclick="openSection('admin')"><span>🛡️</span>অ্যাডমিন</button>
 </nav>
 
 <script>
 function openSection(name){
   if(name === 'matches') name = 'home';
 
-  ['home','auth','profile','leaderboard'].forEach(id=>{
+  ['home','auth','profile','leaderboard','admin'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden',id!==name);
   });
 
@@ -457,12 +478,35 @@ document.getElementById('logout').onclick = async () => {
   }
 };
 
+// UI-only owner display check. This is NOT secure authorization.
+// Replace/secure with backend + Firestore Rules before enabling real admin actions.
+const OWNER_UID = 'FRfwHiZ7ECXpqbhel7r89nzjvWs1';
+
+document.getElementById('demoMatchButton').onclick = () => {
+  const name = document.getElementById('matchName').value.trim();
+  const fee = document.getElementById('matchFee').value;
+  const time = document.getElementById('matchTime').value;
+  const prize = document.getElementById('matchPrize').value;
+  const out = document.getElementById('demoMatchMessage');
+  if (!name || fee === '' || !time || prize === '') {
+    out.textContent = 'সব ঘর পূরণ করো। এটি শুধু প্রিভিউ, কোথাও সেভ হবে না।';
+    return;
+  }
+  out.textContent = `ডেমো: ${name} | ${document.getElementById('matchMode').value} | এন্ট্রি ৳${fee} | প্রাইজ ৳${prize} | ${time} — কোনো তথ্য সেভ হয়নি।`;
+};
+
 onAuthStateChanged(auth,user=>{
   const privateInfo = document.getElementById('privateInfo');
   const guestInfo = document.getElementById('guestInfo');
 
   privateInfo.classList.toggle('hidden',!user);
   guestInfo.classList.toggle('hidden',!!user);
+
+  const isOwnerForDisplayOnly = !!user && user.uid === OWNER_UID;
+  document.getElementById('adminNav').classList.toggle('hidden', !isOwnerForDisplayOnly);
+  if (!isOwnerForDisplayOnly && !document.getElementById('admin').classList.contains('hidden')) {
+    openSection('home');
+  }
 
   document.getElementById('profileEmail').textContent =
     user ? user.email : 'লগইন করা হয়নি';
