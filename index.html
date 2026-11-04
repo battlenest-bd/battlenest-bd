@@ -84,10 +84,89 @@ function saveName(){let n=document.getElementById('nameField').value.trim();if(n
 async function logout(){try{if(auth)await auth.signOut();}catch(e){}document.getElementById('mainApp').classList.remove('active');document.getElementById('loginScreen').classList.add('active')}
 function saveNotice(){let t=document.getElementById('noticeInput').value.trim();if(t)document.getElementById('noticeText').textContent=t}
 function createMatch(){let n=document.getElementById('matchName').value.trim();if(!n)return alert('ম্যাচের নাম লিখুন');matches.push({id:Date.now(),name:n,mode:document.getElementById('matchMode').value,format:document.getElementById('matchFormat').value,fee:document.getElementById('entryFee').value||0,time:document.getElementById('startTime').value,prize:document.getElementById('prizePool').value||0,rules:document.getElementById('matchRules').value,end:Date.now()+600000,joined:true,claimed:false});drawMatches();alert('ডেমোতে ম্যাচ যোগ হয়েছে; পেজ রিফ্রেশে হারাবে।')}
-function drawMatches(){let s=document.getElementById('scheduleList'),l=document.getElementById('liveList'),f=document.getElementById('finishedList');s.innerHTML='';l.innerHTML='';f.innerHTML='';if(!matches.length){s.innerHTML='<div class="card">ডেমো ম্যাচ: BR Solo • Entry ৳20 • Prize ৳800<br><button onclick="alert(\\'নিয়ম পড়ে তারপর Join করুন; বাস্তব Join সংযুক্ত নয়।\\')">📜 নিয়ম / Join</button></div>';l.innerHTML='<div class="card">এখন কোনো লাইভ ডেমো ম্যাচ নেই।</div>';f.innerHTML='<div class="card">এখন কোনো শেষ হওয়া ডেমো ম্যাচ নেই।</div>';return}matches.forEach(m=>{let start=m.time?new Date(m.time).getTime():Infinity;let now=Date.now();let ended=now>=start+30*60*1000;let live=now>=start&&!ended;let card=document.createElement('div');card.className='card';card.innerHTML='<div class="row"><b>'+m.name+'</b><span class="badge">'+(ended?'FINISHED':live?'LIVE':'UPCOMING')+'</span></div><p class="muted">'+m.mode+' • '+m.format+' • '+(m.time||'সময় নির্ধারিত নয়')+'</p>Entry ৳'+m.fee+' • Prize ৳'+m.prize+'<p class="muted">'+m.rules+'</p><button class="secondary" onclick="alert(\\'ম্যাচের নিয়ম: '+(m.rules||'নিয়ম পরে যোগ হবে')+'\\')">নিয়ম দেখুন</button> <button onclick="joinMatch('+m.id+')">Join Match</button>';if(ended){card.innerHTML+='<p>Match Finished</p>'+(m.joined&&now<m.end&&!m.claimed?'<button onclick="openMatch('+m.id+')">Open Now</button>':'');f.appendChild(card)}else if(live)l.appendChild(card);else s.appendChild(card)});if(!s.children.length)s.innerHTML='<div class="card">এখন কোনো upcoming ম্যাচ নেই।</div>';if(!l.children.length)l.innerHTML='<div class="card">এখন কোনো live ম্যাচ নেই।</div>';if(!f.children.length)f.innerHTML='<div class="card">এখন কোনো finished ম্যাচ নেই।</div>'}
-function joinMatch(id){let m=matches.find(x=>x.id===id);if(m)m.joined=true;alert('ডেমোতে Join দেখানো হলো। বাস্তবে UID, capacity ও payment যাচাই দরকার।')}
-function openMatch(id){currentMatch=matches.find(x=>x.id===id);if(!currentMatch)return;document.getElementById('detailTitle').textContent=currentMatch.name;document.getElementById('participantList').innerHTML='<div class="list-row"><span>🥇</span><span>'+demoUser+' <div class="muted">আপনার অ্যাকাউন্ট</div></span><span>📤 আপনার Upload</span></div><div class="list-row"><span>2.</span><span>other***</span><span class="muted">Private</span></div>';document.getElementById('claimArea').classList.toggle('hidden',!currentMatch.joined||currentMatch.claimed);go('matchDetail')}
-function showTab(id){document.getElementById('playersTab').classList.toggle('hidden',id!=='playersTab');document.getElementById('pointsTab').classList.toggle('hidden',id!=='pointsTab')}
-function claimPrize(){if(!currentMatch||!currentMatch.joined||currentMatch.claimed)return;currentMatch.claimed=true;demoBalance+=Number(currentMatch.prize||0);document.getElementById('balanceValue').textContent=demoBalance;document.getElementById('claimArea').classList.add('hidden');alert('ডেমো Claim সম্পন্ন। বাস্তবে একবারই ক্রেডিট করার জন্য secure transaction দরকার।');drawMatches()}
-let names=['shah***','rahi***','gamer***','rifa***','sami***','naye***','robi***','tani***','fahi***','arif***'];for(let i=1;i<=100;i++){let r=document.createElement('div');r.className='list-row';r.innerHTML='<span>'+(i===1?'🥇':i===2?'🥈':i===3?'🥉':i+'.')+'</span><b>'+names[(i-1)%10]+'</b><span class="money">'+(100000-(i-1)*725).toLocaleString('en-US')+' tk 💸</span>';document.getElementById('board').appendChild(r)}
-</script></body></html>
+function drawMatches(){
+  const s = document.getElementById('scheduleList');
+  const l = document.getElementById('liveList');
+  const f = document.getElementById('finishedList');
+
+  s.innerHTML = '';
+  l.innerHTML = '';
+  f.innerHTML = '';
+
+  if(!matches.length){
+    s.innerHTML = '<div class="card">ডেমো ম্যাচ: BR Solo • Entry ৳20 • Prize ৳800</div>';
+    const btn = document.createElement('button');
+    btn.textContent = '📜 নিয়ম / Join';
+    btn.onclick = () => alert('নিয়ম পড়ে তারপর Join করুন; বাস্তব Join সংযুক্ত নয়।');
+    s.querySelector('.card').appendChild(btn);
+
+    l.innerHTML = '<div class="card">এখন কোনো লাইভ ডেমো ম্যাচ নেই।</div>';
+    f.innerHTML = '<div class="card">এখন কোনো শেষ হওয়া ডেমো ম্যাচ নেই।</div>';
+    return;
+  }
+
+  matches.forEach(m => {
+    const start = m.time ? new Date(m.time).getTime() : Infinity;
+    const now = Date.now();
+    const ended = now >= start + 30*60*1000;
+    const live = now >= start && !ended;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const title = document.createElement('b');
+    title.textContent = m.name;
+
+    const status = document.createElement('span');
+    status.className = 'badge';
+    status.textContent = ended ? 'FINISHED' : live ? 'LIVE' : 'UPCOMING';
+
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.append(title, status);
+
+    const info = document.createElement('p');
+    info.className = 'muted';
+    info.textContent = `${m.mode} • ${m.format} • ${m.time || 'সময় নির্ধারিত নয়'}`;
+
+    const prize = document.createElement('p');
+    prize.textContent = `Entry ৳${m.fee} • Prize ৳${m.prize}`;
+
+    const rules = document.createElement('p');
+    rules.className = 'muted';
+    rules.textContent = m.rules || 'নিয়ম পরে যোগ হবে';
+
+    const ruleBtn = document.createElement('button');
+    ruleBtn.className = 'secondary';
+    ruleBtn.textContent = 'নিয়ম দেখুন';
+    ruleBtn.onclick = () => alert('ম্যাচের নিয়ম: ' + (m.rules || 'নিয়ম পরে যোগ হবে'));
+
+    const joinBtn = document.createElement('button');
+    joinBtn.textContent = 'Join Match';
+    joinBtn.onclick = () => joinMatch(m.id);
+
+    card.append(row, info, prize, rules, ruleBtn, joinBtn);
+
+    if(ended){
+      const finishedText = document.createElement('p');
+      finishedText.textContent = 'Match Finished';
+      card.appendChild(finishedText);
+
+      if(m.joined && now < m.end && !m.claimed){
+        const openBtn = document.createElement('button');
+        openBtn.textContent = 'Open Now';
+        openBtn.onclick = () => openMatch(m.id);
+        card.appendChild(openBtn);
+      }
+      f.appendChild(card);
+    } else if(live){
+      l.appendChild(card);
+    } else {
+      s.appendChild(card);
+    }
+  });
+
+  if(!s.children.length) s.innerHTML = '<div class="card">এখন কোনো upcoming ম্যাচ নেই।</div>';
+  if(!l.children.length) l.innerHTML = '<div class="card">এখন কোনো live ম্যাচ নেই।</div>';
+  if(!f.children.length) f.innerHTML = '<div class="card">এখন কোনো finished ম্যাচ নেই।</div>';
+  }</script></body></html>
