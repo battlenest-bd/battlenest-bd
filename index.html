@@ -48,7 +48,9 @@ const OWNER_UID = "FRfwHiZ7ECXpqbhel7r89nzjvWs1";
 let authReady=false, auth=null;
 try {
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  auth=firebase.auth(); authReady=true;
+  auth=firebase.auth();
+const db=firebase.firestore();
+authReady=true;
   document.getElementById('authMessage').textContent='Firebase Authentication সংযুক্ত। ইমেইল দিয়ে লগইন করুন।';
   auth.onAuthStateChanged(user=>{if(user) showSignedIn(user);});
 } catch(e) { document.getElementById('authMessage').textContent='Firebase চালু হয়নি: '+e.message; }
