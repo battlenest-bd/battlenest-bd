@@ -72,12 +72,37 @@ async function registerAccount(){
   const name=document.getElementById('regName').value.trim();
   const email=document.getElementById('regEmail').value.trim();
   const password=document.getElementById('regPass').value;
-  if(!name||!email||!password){alert('নাম, ইমেইল ও পাসওয়ার্ড পূরণ করুন।');return}
-  if(password.length<6){alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return}
-  try{const cred=await auth.createUserWithEmailAndPassword(email,password);await cred.user.updateProfile({displayName:name});showSignedIn(cred.user);}
-  catch(e){alert('অ্যাকাউন্ট তৈরি হয়নি: '+e.message)}
-}
-function showRegister(){document.getElementById('register').classList.toggle('hidden')}
+
+  if(!name||!email||!password){
+    alert('নাম, ইমেইল ও পাসওয়ার্ড পূরণ করুন।');
+    return;
+  }
+
+  if(password.length<6){
+    alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');
+    return;
+  }
+
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,password);
+
+    await cred.user.updateProfile({displayName:name});
+
+    await db.collection('users').doc(cred.user.uid).set({
+      uid:cred.user.uid,
+      name:name,
+      email:email,
+      balance:0,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showSignedIn(cred.user);
+    alert('অ্যাকাউন্ট ও প্রোফাইল তৈরি হয়েছে!');
+
+  }catch(e){
+    alert('সমস্যা হয়েছে: '+e.message);
+  }
+  } showRegister(){document.getElementById('register').classList.toggle('hidden')}
 function go(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));let el=document.getElementById(id);if(el)el.classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn&&btn.classList.contains('nav'))btn.classList.add('active');window.scrollTo(0,0)}
 function previewLogo(e){if(e.target.files[0])document.getElementById('logoBox').innerHTML='<img src="'+URL.createObjectURL(e.target.files[0])+'">'}
 function saveName(){let n=document.getElementById('nameField').value.trim();if(n){demoUser=n;alert('ডেমোতে নাম বদলেছে। বাস্তবে অ্যাকাউন্টে সেভ করতে backend লাগবে।')}}
