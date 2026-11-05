@@ -42,8 +42,7 @@ const firebaseConfig = {
   measurementId: "G-DMHQDESMRH"
 };
 const OWNER_UID = "FRfwHiZ7ECXpqbhel7r89nzjvWs1";
-let authReady=false, auth=null;
-try {
+let authReady=false, auth=null, db=null;
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   auth=firebase.auth();
 db=firebase.firestore();
