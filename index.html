@@ -1,6 +1,56 @@
 <!doctype html>
 <html lang="bn">
-<head>
+<head> <style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#080d1b;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.app{max-width:600px;margin:auto;padding:15px}
+header,.card,.warning{
+  background:#111a2e;
+  border:1px solid #d4a72c;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:15px;
+}
+.brand{font-size:23px;font-weight:bold;color:#f5c542}
+.logo{color:#f5c542;font-weight:bold}
+h2,h3{color:#f5c542}
+button{
+  background:#d4a72c;
+  color:#111;
+  border:0;
+  border-radius:7px;
+  padding:12px;
+  margin:5px 0;
+  font-weight:bold;
+}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border-radius:7px;
+}
+.hidden{display:none!important}
+.screen{display:none}
+.screen.active{display:block}
+.page{display:none}
+.page.active{display:block}
+.muted,.fine{color:#aaa}
+.nav{
+  display:flex;
+  justify-content:space-around;
+  background:#111a2e;
+  padding:10px;
+  position:sticky;
+  bottom:0;
+}
+.nav button{flex:1}
+.badge,.pill{color:#f5c542}
+</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BattleNest BD — App Design</title>
